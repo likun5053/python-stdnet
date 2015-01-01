@@ -326,7 +326,7 @@ odm.Model = {
         local ordered, ids, scores, value = self.meta.sorted
         if ordered then
             ids, scores = {}, {}
-            for i, score in ipairs(self.redis.call('zrange', fromkey, 0, -1, 'withscores')) do
+            for i, score in ipairs(redis.call('zrange', fromkey, 0, -1, 'withscores')) do
                 if 2*math.floor(i/2) == i then
                     table.insert(scores, score)
                 else

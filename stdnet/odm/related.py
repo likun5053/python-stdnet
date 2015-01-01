@@ -80,10 +80,7 @@ def Many2ManyThroughModel(field):
     '''Create a Many2Many through model with two foreign key fields'''
     from stdnet.odm import StdNetType, StdModel, ForeignKey
     name_model = field.model._meta.name
-    name_relmodel = field.relmodel._meta.name
-    # The two models are the same.
-    if name_model == name_relmodel:
-        name_relmodel += '2'
+    name_relmodel = field.name
     through = field.through
     # Create the through model
     if through is None:

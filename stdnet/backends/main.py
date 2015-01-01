@@ -26,17 +26,18 @@ It returns a (scheme, host, params) tuple."""
         query = r.path
         path = ''
         if query:
-            if query.find('?'):
-                path = query
+            qidx = query.find('?')
+            if qidx:
+                query = query[qidx+1:]
             else:
-                query = query[1:]
+                path = query
     else:
         path, query = r.path, r.query
-    
+
     if path:
         raise ImproperlyConfigured("Backend URI must not have a path.\
  Found {0}".format(path))
-        
+
     if query:
         params = dict(urlparse.parse_qsl(query))
     else:
@@ -60,8 +61,8 @@ def get_connection_string(scheme, address, params):
     if params:
         address += '?' + urlencode(params)
     return scheme + '://' + address
-    
-    
+
+
 def getdb(backend=None, **kwargs):
     '''get a backend database'''
     if isinstance(backend, BackendDataServer):
@@ -80,6 +81,6 @@ def getcache(backend=None, encoder = encoders.PythonPickle, **kwargs):
     if isclass(encoder):
         encoder = encoder()
     db = getdb(backend=backend, pickler=encoder, **kwargs)
-    return db.as_cache() 
+    return db.as_cache()
 
-        
+

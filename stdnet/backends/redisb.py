@@ -427,7 +427,7 @@ class Set(RedisStructure):
         return self.client.scard(self.id)
     
     def _iter(self):
-        return self.client.smembers(self.id)
+        return iter(self.client.smembers(self.id))
     
 
 class Zset(RedisStructure):
