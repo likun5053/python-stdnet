@@ -694,7 +694,7 @@ an exception is raised.
         '''Aggregate lookup parameters.'''
         meta = self._meta
         fields = meta.dfields
-        field_lookups = {}
+        field_lookups = []
         for name, value in iteritems(kwargs):
             bits = name.split(JSPLITTER)
             field_name = bits.pop(0)
@@ -723,10 +723,7 @@ an exception is raised.
             else:
                 lookup = None
             # Get lookups on attribute name
-            lookups = field_lookups.get(attname)
-            if lookups is None:
-                lookups = []
-                field_lookups[attname] = lookups
+            lookups = []
             if lookup not in range_lookups:
                 if not field.index:
                     raise QuerySetError("{0} {1} is not an index.\
@@ -741,8 +738,9 @@ an exception is raised.
                     lookups.append(v)
             else:
                 lookups.append(lookup_value(lookup, field.dumps(value, lookup)))
-        return [queryset(self, name=name, underlying=field_lookups[name])\
-                for name in sorted(field_lookups)]
+            field_lookups.append((attrname, lookups))
+        return [queryset(self, name=name, underlying=value)\
+                for name, value in sorted(field_lookups)]
 
     def items(self, slic=None):
         '''Fetch data matching theis :class:`Query` and return a list
