@@ -738,7 +738,7 @@ an exception is raised.
                     lookups.append(v)
             else:
                 lookups.append(lookup_value(lookup, field.dumps(value, lookup)))
-            field_lookups.append((attrname, lookups))
+            field_lookups.append((attname, lookups))
         return [queryset(self, name=name, underlying=value)\
                 for name, value in sorted(field_lookups)]
 
