@@ -155,9 +155,9 @@ odm.Model = {
         elseif options.ordering == 'explicit' then
             ids = self:_explicit_ordering(key, options.start, options.stop, options.order)
         elseif options.ordering == 'DESC' then
-            ids = odm.redis.call('zrevrange', key, options.start, options.stop)
+            ids = odm.redis.call('zrevrange', key, options.start, options.stop-1)
         elseif options.ordering == 'ASC' then
-            ids = odm.redis.call('zrange', key, options.start, options.stop)
+            ids = odm.redis.call('zrange', key, options.start, options.stop-1)
         else
             ids = odm.redis.call('smembers', key)
         end
